@@ -6,6 +6,9 @@ import com.comviva.entity.Product;
 import com.comviva.exception.ResourceNotFoundException;
 import com.comviva.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -79,6 +82,17 @@ public class ProductServiceImpl implements ProductService {
 
         return "Product deleted successfully with id: " + id;
     }
+
+    @Override
+    public Page<ProductResponseDto> getAllProducts(int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Product> productPage = repository.findAll(pageable);
+
+        return productPage.map(this::mapToResponse);
+    }
+
 
     private ProductResponseDto mapToResponse(Product product) {
 

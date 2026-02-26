@@ -5,6 +5,7 @@ import com.comviva.dto.ProductResponseDto;
 import com.comviva.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +44,14 @@ public class ProductController {
     public ResponseEntity<String> delete(@PathVariable Long id) {
 
         return ResponseEntity.ok(service.deleteProduct(id));
+    }
+
+    @GetMapping("/page")
+    public Page<ProductResponseDto> getAllProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+    ) {
+        return service.getAllProducts(page, size);
     }
 
 }
